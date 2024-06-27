@@ -1,0 +1,46 @@
+﻿@page "/nameinput"
+@rendermode InteractiveAuto
+
+
+<h3>NameInput</h3>
+
+<input @bind="userName" placeholder="wpisz swoje imie" @oninput="ValidateName"/>
+<button @onclick="ShowName" disabled="@(isNameValid ? null: true)">Pokaż imie</button>
+<br />
+
+@if (!string.IsNullOrEmpty(displayName))
+{
+    <p>Witaj, @displayName!</p>
+}
+@if (!string.IsNullOrEmpty(validationMessage))
+{
+	<p style="color: red;">@validationMessage</p>
+}
+
+@code {
+	private string userName;
+	private string displayName;
+	private bool isNameValid = false;
+	private string validationMessage;
+
+	private void ValidateName(ChangeEventArgs e)
+	{
+		userName = e.Value.ToString();
+		if (userName.Length < 3)
+		{
+			validationMessage = "Imie musi mieć co najmniej 3 znaki";
+			isNameValid = false;
+		}
+		else
+		{
+			validationMessage = "";
+			isNameValid = true;
+		}
+	}
+
+	private void ShowName()
+	{
+		displayName = userName;
+	}
+
+}
